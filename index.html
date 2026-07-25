@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AOFilm — Cinema Journal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0b0e14;
+            --bg-surface: #161b22;
+            --bg-card: #1c212a;
+            --border: #262c36;
+            --gold: #e5a93c;
+            --crimson: #e50914;
+            --text: #f0f6fc;
+            --text-muted: #8b949e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        header {
+            background: rgba(22, 27, 34, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            padding: 16px 24px;
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text);
+        }
+        .logo span { color: var(--gold); }
+
+        .search-bar {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+        .search-bar input {
+            width: 100%;
+            border-radius: 99px;
+            padding: 10px 16px 10px 40px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            color: var(--text);
+            outline: none;
+            font-size: 0.9rem;
+        }
+        .search-bar input:focus { border-color: var(--gold); }
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            stroke: var(--text-muted);
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: #0b0e14;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(229, 169, 60, 0.4);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 32px auto;
+            padding: 0 24px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-val {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--gold);
+        }
+        .stat-lbl {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(229, 169, 60, 0.5);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .poster-wrap {
+            aspect-ratio: 2/3;
+            width: 100%;
+            position: relative;
+            background: #0d1117;
+        }
+        .poster-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .badge-rating {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(11, 14, 20, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--gold);
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 99px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .card-body {
+            padding: 16px;
+        }
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .card-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 4px 0 12px;
+        }
+        .card-review {
+            font-size: 0.82rem;
+            color: #c9d1d9;
+            background: var(--bg-primary);
+            padding: 10px;
+            border-radius: 8px;
+            font-style: italic;
+        }
+
+        /* Modal */
+        .modal-bg {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        .modal-bg.open { opacity: 1; pointer-events: auto; }
+
+        .modal-content {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            padding: 24px;
+        }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 0.85rem; margin-bottom: 6px; color: var(--text-muted); }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-inner">
+            <div class="logo">🎬 AO<span>Film</span></div>
+            <div class="search-bar">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="searchInput" placeholder="Cari film, sutradara, genre...">
+            </div>
+            <button class="btn-primary" onclick="openModal()">+ Log Film Baru</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-val" id="statTotal">4</div>
+                <div class="stat-lbl">Film Di-log</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val">5.0 ★</div>
+                <div class="stat-lbl">Rata-rata Rating</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val">Sci-Fi</div>
+                <div class="stat-lbl">Top Genre</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val">10.5 jam</div>
+                <div class="stat-lbl">Total Durasi</div>
+            </div>
+        </section>
+
+        <section class="movie-grid" id="movieGrid"></section>
+    </main>
+
+    <!-- Modal Form -->
+    <div class="modal-bg" id="modalBg">
+        <div class="modal-content">
+            <h2 style="font-family: Outfit; margin-bottom: 20px;">Log Film Baru</h2>
+            <form id="filmForm">
+                <div class="form-group">
+                    <label>Judul Film</label>
+                    <input type="text" id="title" required placeholder="e.g. Inception">
+                </div>
+                <div class="form-group">
+                    <label>Tahun & Genre</label>
+                    <div style="display:flex; gap: 10px;">
+                        <input type="number" id="year" placeholder="2024" style="flex:1;">
+                        <input type="text" id="genre" placeholder="Sci-Fi" style="flex:1;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Rating (1 - 5 Bintang)</label>
+                    <select id="rating">
+                        <option value="5">★★★★★ (5.0)</option>
+                        <option value="4">★★★★☆ (4.0)</option>
+                        <option value="3">★★★☆☆ (3.0)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Ulasan Singkat</label>
+                    <textarea id="review" rows="3" placeholder="Tuliskan pengalaman menonton Anda..."></textarea>
+                </div>
+                <div style="display:flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button type="button" onclick="closeModal()" style="padding: 10px 16px; background: transparent; border: 1px solid var(--border); color: var(--text); border-radius: 8px; cursor: pointer;">Batal</button>
+                    <button type="submit" class="btn-primary">Simpan Film</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const sampleMovies = [
+            { id: 1, title: 'Dune: Part Two', year: 2024, genre: 'Sci-Fi', rating: 5, poster: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=800&auto=format&fit=crop', review: 'Pengalaman visual dan audio luar biasa di layar lebarnya.' },
+            { id: 2, title: 'Interstellar', year: 2014, genre: 'Sci-Fi', rating: 5, poster: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop', review: 'Mahakarya emosional sains dan ruang angkasa.' },
+            { id: 3, title: 'Oppenheimer', year: 2023, genre: 'Drama', rating: 5, poster: 'https://images.unsplash.com/photo-1440404653325-ab127d49abc1?q=80&w=800&auto=format&fit=crop', review: 'Penyuntingan dan scoring musik dramatis luar biasa.' },
+            { id: 4, title: 'Spirited Away', year: 2001, genre: 'Animation', rating: 5, poster: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=800&auto=format&fit=crop', review: 'Keajaiban animasi klasik dari Studio Ghibli.' }
+        ];
+
+        let movies = JSON.parse(localStorage.getItem('aofilm_list')) || sampleMovies;
+
+        function render() {
+            const grid = document.getElementById('movieGrid');
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = movies.filter(m => m.title.toLowerCase().includes(q) || m.genre.toLowerCase().includes(q));
+
+            grid.innerHTML = filtered.map(m => `
+                <div class="card">
+                    <div class="poster-wrap">
+                        <img src="${m.poster}" alt="${m.title}">
+                        <div class="badge-rating">★ ${Number(m.rating).toFixed(1)}</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">${m.title}</div>
+                        <div class="card-meta">${m.year} • ${m.genre}</div>
+                        <div class="card-review">"${m.review}"</div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('statTotal').innerText = movies.length;
+        }
+
+        function openModal() { document.getElementById('modalBg').classList.add('open'); }
+        function closeModal() { document.getElementById('modalBg').classList.remove('open'); }
+
+        document.getElementById('filmForm').onsubmit = (e) => {
+            e.preventDefault();
+            const newM = {
+                id: Date.now(),
+                title: document.getElementById('title').value,
+                year: document.getElementById('year').value || 2026,
+                genre: document.getElementById('genre').value || 'Drama',
+                rating: document.getElementById('rating').value,
+                poster: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=800&auto=format&fit=crop',
+                review: document.getElementById('review').value || 'Film di-log baru.'
+            };
+            movies.unshift(newM);
+            localStorage.setItem('aofilm_list', JSON.stringify(movies));
+            closeModal();
+            render();
+            document.getElementById('filmForm').reset();
+        };
+
+        document.getElementById('searchInput').oninput = render;
+
+        render();
+    </script>
+</body>
+</html>
